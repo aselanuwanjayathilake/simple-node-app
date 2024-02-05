@@ -24,6 +24,6 @@ jobs:
       - name: Pull image from Docker Hub
         run: sudo docker pull aselanuwan/simple-node-app:latest
       - name: Delete old container
-        run: sudo ocker rm -f simple-node-app-container
+        run: sudo docker rm -f simple-node-app-container
       - name: Run Docker container
         run: sudo docker run -d -p 5000:5000 --name simple-node-app-container aselanuwan/simple-node-app
