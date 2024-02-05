@@ -1,0 +1,29 @@
+name: CICD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image
+        run: docker build -t main/simpleNodeApp .
+      - name: Publish image to Docker Hub
+        run: docker push main/simpleNodeApp:latest
+
+  deploy:
+    needs: build
+    runs-on: aws-ec2
+    steps:
+      - name: Pull image from Docker Hub
+        run: docker pull main/simpleNodeApp:latest
+      - name: Delete old container
+        run: docker rm -f simpleNodeApp-container
+      - name: Run Docker container
+        run: docker run -d -p 5000:5000 --name simpleNodeApp-container main/simpleNodeApp
