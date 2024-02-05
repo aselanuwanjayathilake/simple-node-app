@@ -22,7 +22,7 @@ jobs:
     runs-on: [aws-ec2]
     steps:
       - name: Pull image from Docker Hub
-        run: sodo docker pull aselanuwan/simple-node-app:latest
+        run: sudo docker pull aselanuwan/simple-node-app:latest
       - name: Delete old container
         run: sudo ocker rm -f simple-node-app-container
       - name: Run Docker container
