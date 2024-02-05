@@ -16,14 +16,3 @@ jobs:
         run: docker build -t main/simple-node-app .
       - name: Publish image to Docker Hub
         run: docker push main/simple-node-app:latest
-
-  deploy:
-    needs: build
-    runs-on: [aws-ec2]
-    steps:
-      - name: Pull image from Docker Hub
-        run: docker pull main/simple-node-app:latest
-      - name: Delete old container
-        run: docker rm -f simple-node-app-container
-      - name: Run Docker container
-        run: docker run -d -p 5000:5000 --name simple-node-app-container main/simple-node-app
